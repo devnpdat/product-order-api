@@ -1,0 +1,104 @@
+# API Testing Examples
+
+## Products
+
+### 1. Get all products
+GET http://localhost:8081/api/products
+
+###
+
+### 2. Get product by ID
+GET http://localhost:8081/api/products/1
+
+###
+
+### 3. Search products
+GET http://localhost:8081/api/products/search?name=iPhone
+
+###
+
+### 4. Create product
+POST http://localhost:8081/api/products
+Content-Type: application/json
+
+{
+  "name": "Sony WH-1000XM5",
+  "description": "Premium noise cancelling headphones",
+  "price": 399.99,
+  "stock": 25
+}
+
+###
+
+### 5. Update product
+PUT http://localhost:8081/api/products/1
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro Max",
+  "description": "Latest iPhone with larger display",
+  "price": 1299.99,
+  "stock": 45
+}
+
+###
+
+### 6. Update stock
+PATCH http://localhost:8081/api/products/1/stock?quantity=10
+
+###
+
+### 7. Delete product
+DELETE http://localhost:8081/api/products/1
+
+###
+
+## Orders
+
+### 1. Get all orders
+GET http://localhost:8081/api/orders
+
+###
+
+### 2. Get order by ID
+GET http://localhost:8081/api/orders/1
+
+###
+
+### 3. Get orders by status
+GET http://localhost:8081/api/orders/status/PENDING
+
+###
+
+### 4. Create order
+POST http://localhost:8081/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "Nguyen Van A",
+  "customerEmail": "nguyenvana@example.com",
+  "customerPhone": "0987654321",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 4,
+      "quantity": 1
+    }
+  ]
+}
+
+###
+
+### 5. Update order status
+PATCH http://localhost:8081/api/orders/1/status?status=CONFIRMED
+
+###
+
+### 6. Cancel order
+POST http://localhost:8081/api/orders/1/cancel
+
+###
+
