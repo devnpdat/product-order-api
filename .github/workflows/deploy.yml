@@ -2,7 +2,7 @@ name: Deploy Java Product Order API
 
 on:
   push:
-    branches: [ "main" ]  # hoặc "main" khi deploy chính thức
+    branches: [ "main" ]  # hoặc "dev" nếu muốn deploy khi merge dev
 
 jobs:
   build:
@@ -21,14 +21,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Copy JAR to EC2 and restart app
+      - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "target/product-order-api.jar"
-          target: "/home/ec2-user/app/product-order-api.jar"
+          target: "/home/ubuntu/app/product-order-api.jar"
 
       - name: Restart Java app on EC2
         uses: appleboy/ssh-action@v1.1.0
@@ -37,5 +37,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            mkdir -p /home/ubuntu/app
+            cd /home/ubuntu/app
             pkill -f "product-order-api.jar" || true
-            nohup java -jar /home/ec2-user/app/product-order-api.jar --spring.profiles.active=prod > app.log 2>&1 &
+            nohup java -jar product-order-api.jar --spring.profiles.active=prod > app.log 2>&1 &
