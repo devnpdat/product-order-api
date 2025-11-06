@@ -1,0 +1,80 @@
+### S3 Image Upload API Tests
+
+### 1. Check S3 Status
+GET http://localhost:8086/api/upload/status
+Accept: application/json
+
+###
+
+### 2. Upload Product Image
+POST http://localhost:8086/api/upload/image
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="product-image.jpg"
+Content-Type: image/jpeg
+
+< /path/to/your/image.jpg
+--WebAppBoundary--
+
+###
+
+### 3. Delete Product Image
+DELETE http://localhost:8086/api/upload/image?url=https://your-bucket.s3.ap-southeast-1.amazonaws.com/products/image.jpg
+
+###
+
+### 4. Get Image via Backend Proxy
+GET http://localhost:8086/api/upload/image/products/uuid-123.jpg
+
+###
+
+### 5. Generate Presigned URL (Temporary Access)
+GET http://localhost:8086/api/upload/image/presigned?key=products/uuid-123.jpg&expirationSeconds=3600
+
+###
+
+### 6. Generate Presigned URL (24 hours)
+GET http://localhost:8086/api/upload/image/presigned?key=products/uuid-123.jpg&expirationSeconds=86400
+
+###
+
+### Full Flow Test: Upload Image then Create Product
+
+### Step 1: Upload image first
+POST http://localhost:8086/api/upload/image
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="iphone.jpg"
+Content-Type: image/jpeg
+
+< /path/to/iphone.jpg
+--WebAppBoundary--
+
+### Step 2: Use the returned imageUrl to create product
+POST http://localhost:8086/api/admin/products
+Content-Type: application/json
+
+{
+  "name": "iPhone 16 Pro Max",
+  "description": "Latest flagship iPhone with A18 Pro chip",
+  "price": 1299.99,
+  "stock": 25,
+  "imageUrl": "https://your-bucket.s3.ap-southeast-1.amazonaws.com/products/uuid.jpg"
+}
+
+### Step 3: Update product with new image
+PUT http://localhost:8086/api/admin/products/1
+Content-Type: application/json
+
+{
+  "name": "iPhone 16 Pro Max",
+  "description": "Latest flagship iPhone with A18 Pro chip - Updated",
+  "price": 1299.99,
+  "stock": 25,
+  "imageUrl": "https://your-bucket.s3.ap-southeast-1.amazonaws.com/products/new-uuid.jpg"
+}
+
+###
+

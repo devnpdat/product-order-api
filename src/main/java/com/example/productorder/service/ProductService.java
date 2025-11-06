@@ -81,6 +81,7 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
         product.setStock(productDTO.getStock());
+        product.setImageUrl(productDTO.getImageUrl());
 
         Product savedProduct = productRepository.save(product);
 
@@ -102,6 +103,7 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
         product.setStock(productDTO.getStock());
+        product.setImageUrl(productDTO.getImageUrl());
 
         Product updatedProduct = productRepository.save(product);
 

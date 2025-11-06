@@ -31,6 +31,9 @@ public class ProductDocument {
     @Field(type = FieldType.Integer)
     private Integer stock;
 
+    @Field(type = FieldType.Keyword)
+    private String imageUrl;
+
     @Field(type = FieldType.Boolean)
     private Boolean available;
 
@@ -42,6 +45,7 @@ public class ProductDocument {
         doc.setDescription(product.getDescription());
         doc.setPrice(product.getPrice());
         doc.setStock(product.getStock());
+        doc.setImageUrl(product.getImageUrl());
         doc.setAvailable(product.getStock() > 0);
         return doc;
     }
